@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String          @id @default(uuid())
+  email        String          @unique
+  passwordHash String
+  role         String          @default("STUDENT") // STUDENT, TEACHER, REGISTRAR, ADMIN
+  status       String          @default("ACTIVE")  // ACTIVE, SUSPENDED
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  profile      Profile?
+  studentProfile StudentProfile?
+  teachingAssignments CourseAssignment[]
+  auditLogs    AuditTrail[]
+  gradeSubmissions Grade[]     @relation("TeacherGradeSubmissions")
+  gradeApprovals   Grade[]     @relation("RegistrarGradeApprovals")
+  changeRequestsSubmitted GradeChangeRequest[] @relation("TeacherChangeRequests")
+  changeRequestsApproved  GradeChangeRequest[] @relation("RegistrarChangeRequests")
+  registrationsApproved   CourseRegistration[] @relation("RegistrarRegistrationApprovals")
+  applicationsReviewed    Application[]        @relation("RegistrarApplicationReviews")
+}
+
+model Profile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName   String
+  middleName  String?
+  lastName    String
+  phone       String?
+  dateOfBirth DateTime?
+  gender      String?
+  photoUrl    String?
+  nationalId  String?
+}
+
+model Department {
+  id       String    @id @default(uuid())
+  name     String
+  code     String    @unique // NURS, PHARM, PH, MLS
+  faculty  String    @default("Faculty of Health Sciences")
+  programs Program[]
+  courses  Course[]
+}
+
+model Program {
+  id                   String        @id @default(uuid())
+  departmentId         String
+  department           Department    @relation(fields: [departmentId], references: [id])
+  name                 String
+  degreeType           String        @default("BSC") // DIPLOMA, BSC, POSTGRAD
+  totalCreditsRequired Int           @default(130)
+  students             StudentProfile[]
+  applications         Application[]
+}
+
+model StudentProfile {
+  id              String               @id @default(uuid())
+  userId          String               @unique
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  studentIdNumber String               @unique // e.g. HC/UG/2026/001
+  programId       String
+  program         Program              @relation(fields: [programId], references: [id])
+  academicYear    String               @default("2026/2027")
+  currentSemester Int                  @default(1)
+  admissionDate   DateTime             @default(now())
+  registrations   CourseRegistration[]
+  grades          Grade[]
+}
+
+model Course {
+  id              String             @id @default(uuid())
+  code            String             @unique // e.g. NURS201
+  title           String
+  creditHours     Int                @default(3)
+  lectureHours    Int                @default(2)
+  labHours        Int                @default(3)
+  departmentId    String
+  department      Department         @relation(fields: [departmentId], references: [id])
+  semester        Int                @default(1)
+  yearLevel       Int                @default(1)
+  assignments     CourseAssignment[]
+  registeredItems RegistrationItem[]
+  grades          Grade[]
+}
+
+model CourseAssignment {
+  id           String   @id @default(uuid())
+  courseId     String
+  course       Course   @relation(fields: [courseId], references: [id])
+  teacherId    String
+  teacher      User     @relation(fields: [teacherId], references: [id])
+  academicYear String   @default("2026/2027")
+  semester     Int      @default(1)
+  section      String   @default("Section A")
+}
+
+model Application {
+  id              String    @id @default(uuid())
+  referenceNo     String    @unique // HC-YYYY-XXXX e.g. HC-2026-1001
+  personalInfo    String    // JSON string: { firstName, lastName, email, phone, gender, dob, address }
+  academicHistory String    // JSON string: { highSchool, gpa, completionYear, nationalExamScore }
+  programId       String
+  program         Program   @relation(fields: [programId], references: [id])
+  documents       String    // JSON string array of URLs
+  status          String    @default("SUBMITTED") // SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED
+  reviewedById    String?
+  reviewedBy      User?     @relation("RegistrarApplicationReviews", fields: [reviewedById], references: [id])
+  reviewNotes     String?
+  submittedAt     DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model CourseRegistration {
+  id           String             @id @default(uuid())
+  studentId    String
+  student      StudentProfile     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicYear String             @default("2026/2027")
+  semester     Int                @default(1)
+  status       String             @default("DRAFT") // DRAFT, SUBMITTED, APPROVED, REJECTED
+  approvedById String?
+  approvedBy   User?              @relation("RegistrarRegistrationApprovals", fields: [approvedById], references: [id])
+  approvedAt   DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  items        RegistrationItem[]
+}
+
+model RegistrationItem {
+  id             String             @id @default(uuid())
+  registrationId String
+  registration   CourseRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  courseId       String
+  course         Course             @relation(fields: [courseId], references: [id])
+
+  @@unique([registrationId, courseId])
+}
+
+model Grade {
+  id               String               @id @default(uuid())
+  studentId        String
+  student          StudentProfile       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  courseId         String
+  course           Course               @relation(fields: [courseId], references: [id])
+  assessmentMarks  Float                @default(0) // Continuous Assessment, max 50
+  examMarks        Float                @default(0) // Final Exam, max 50
+  totalMarks       Float                @default(0) // Sum, max 100
+  letterGrade      String               @default("F")
+  gradePoint       Float                @default(0.0)
+  status           String               @default("DRAFT") // DRAFT, SUBMITTED, APPROVED, PUBLISHED
+  submittedById    String?
+  submittedBy      User?                @relation("TeacherGradeSubmissions", fields: [submittedById], references: [id])
+  approvedById     String?
+  approvedBy       User?                @relation("RegistrarGradeApprovals", fields: [approvedById], references: [id])
+  publishedAt      DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  changeRequests   GradeChangeRequest[]
+
+  @@unique([studentId, courseId])
+}
+
+model GradeChangeRequest {
+  id                 String    @id @default(uuid())
+  gradeId            String
+  grade              Grade     @relation(fields: [gradeId], references: [id], onDelete: Cascade)
+  previousTotalMarks Float
+  proposedTotalMarks Float
+  reason             String
+  requestedById      String
+  requestedBy        User      @relation("TeacherChangeRequests", fields: [requestedById], references: [id])
+  status             String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedById       String?
+  approvedBy         User?     @relation("RegistrarChangeRequests", fields: [approvedById], references: [id])
+  auditNote          String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String
+  targetRoles String   @default("ALL") // ALL, STUDENT, TEACHER, PUBLIC
+  isPinned    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model AuditTrail {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action      String   // e.g. GRADE_SUBMIT, GRADE_PUBLISH, REGISTRATION_APPROVE, ADMISSION_APPROVE
+  resource    String   // e.g. Grade, Application, CourseRegistration
+  resourceId  String
+  diffPayload String?  // JSON string of previous and new state
+  ipAddress   String?
+  timestamp   DateTime @default(now())
+}

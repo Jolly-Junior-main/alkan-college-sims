@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --primary-navy: #0B2545;
+  --slate-accent: #134074;
+  --health-teal: #007A78;
+  --health-teal-light: #E6F6F5;
+  --surface-neutral: #F8FAFC;
+  --surface-card: #FFFFFF;
+  --border-subtle: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+}
+
+@theme inline {
+  --color-primary-navy: #0B2545;
+  --color-slate-accent: #134074;
+  --color-health-teal: #007A78;
+  --color-health-teal-light: #E6F6F5;
+  --color-surface-neutral: #F8FAFC;
+}
+
+body {
+  background-color: var(--surface-neutral);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom Academic Print Styles for Unofficial Transcript */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .transcript-sheet {
+    box-shadow: none !important;
+    border: 1px solid #CCCCCC !important;
+    padding: 0 !important;
+  }
+}
