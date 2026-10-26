@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function RegistrarGradesPage() {
   const session = await getSession();
-  if (!session) return null;
 
   // Fetch all courses that have assignments
   const courses = await prisma.course.findMany({

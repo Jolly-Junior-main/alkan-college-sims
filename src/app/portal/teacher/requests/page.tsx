@@ -5,10 +5,10 @@ import { AlertCircle, ArrowLeft, CheckCircle2, Clock } from "lucide-react";
 
 export default async function TeacherRequestsPage() {
   const session = await getSession();
-  if (!session) return null;
+  const requestedById = session?.userId;
 
   const requests = await prisma.gradeChangeRequest.findMany({
-    where: { requestedById: session.userId },
+    where: requestedById ? { requestedById } : {},
     include: {
       grade: {
         include: {

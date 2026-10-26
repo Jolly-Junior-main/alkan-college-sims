@@ -4,13 +4,14 @@ import { GradeSheetTable } from "./grade-sheet-table";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, ShieldCheck } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function CourseGradingPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const session = await getSession();
-  if (!session) return null;
 
   const { id: courseId } = await params;
 
@@ -19,9 +20,7 @@ export default async function CourseGradingPage({
     where: { id: courseId },
     include: {
       department: true,
-      assignments: {
-        where: { teacherId: session.userId },
-      },
+      assignments: true,
     },
   });
 

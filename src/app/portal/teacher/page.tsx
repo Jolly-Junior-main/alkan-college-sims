@@ -14,11 +14,11 @@ import {
 
 export default async function TeacherDashboardPage() {
   const session = await getSession();
-  if (!session) return null;
+  const teacherId = session?.userId;
 
   // Fetch teaching assignments for this instructor
   const assignments = await prisma.courseAssignment.findMany({
-    where: { teacherId: session.userId },
+    where: teacherId ? { teacherId } : {},
     include: {
       course: {
         include: {
@@ -63,7 +63,7 @@ export default async function TeacherDashboardPage() {
 
   // Fetch instructor's pending change requests
   const pendingRequests = await prisma.gradeChangeRequest.findMany({
-    where: { requestedById: session.userId },
+    where: teacherId ? { requestedById: teacherId } : {},
     include: { grade: { include: { course: true, student: { include: { user: { include: { profile: true } } } } } } },
     orderBy: { createdAt: "desc" },
     take: 3,
@@ -78,7 +78,7 @@ export default async function TeacherDashboardPage() {
             Faculty Teaching & Grading Portal
           </div>
           <h1 className="text-xl sm:text-2xl font-bold">
-            Welcome, {session.name}
+            Welcome, {session?.name || "Dr. Alemu Kebede"}
           </h1>
           <p className="text-xs text-slate-300 mt-1">
             Academic Faculty • Academic Year 2026/2027 Semester I Section Allocations

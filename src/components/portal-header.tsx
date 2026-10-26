@@ -1,6 +1,7 @@
 import { logoutAction } from "@/actions/auth-actions";
 import { LogOut, User as UserIcon, Shield, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface PortalHeaderProps {
   user: {
@@ -67,8 +68,14 @@ export function PortalHeader({ user, studentDetails }: PortalHeaderProps) {
       <div className="px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href={`/portal/${user.role.toLowerCase()}`} className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-md bg-[#0B2545] text-white flex items-center justify-center font-bold text-lg shadow-sm">
-              AH
+            <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 p-0.5 flex items-center justify-center shadow-xs shrink-0">
+              <Image
+                src="/logo.png"
+                alt="Alkan Logo"
+                width={36}
+                height={36}
+                className="w-9 h-9 object-contain"
+              />
             </div>
             <div>
               <div className="font-bold text-sm tracking-tight text-[#0B2545] flex items-center gap-1.5">

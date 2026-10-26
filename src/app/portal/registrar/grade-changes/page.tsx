@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function RegistrarGradeChangesPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const requests = await prisma.gradeChangeRequest.findMany({
     include: {

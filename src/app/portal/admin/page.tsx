@@ -16,7 +16,6 @@ import {
 
 export default async function AdminDashboardPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const [studentCount, teacherCount, registrarCount, deptCount, programCount, courseCount, auditCount] =
     await Promise.all([

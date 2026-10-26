@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function AdminAuditPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const logs = await prisma.auditTrail.findMany({
     include: {

@@ -1,22 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --primary-navy: #0B2545;
-  --slate-accent: #134074;
-  --health-teal: #007A78;
-  --health-teal-light: #E6F6F5;
-  --surface-neutral: #F8FAFC;
-  --surface-card: #FFFFFF;
-  --border-subtle: #E2E8F0;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
+  /* Alkan College Official Brand Palette (derived from the Logo and institutional identity) */
+  --primary-navy: #062667;       /* Institutional Royal Navy - Open Book and Foundation */
+  --primary-navy-dark: #041945;  /* Deep Navy */
+  --slate-accent: #0f3675;       /* Secondary Blue */
+  --medical-green: #1b7a3e;      /* Green Chalice / Bowl of Hygieia */
+  --medical-green-light: #EBF7EE;/* Soft Green Background */
+  --torch-gold: #FBE704;         /* Golden Torch Flame / Wisdom (Featured CTA) */
+  --torch-gold-hover: #E5D200;   /* Torch Gold Hover */
+  --torch-gold-dark: #C69200;    /* Muted Gold */
+  --radiant-red: #D92228;        /* Sunburst Rays of Enlightenment */
+  --radiant-red-light: #FDE8E8;  /* Soft Red Accent */
+  --surface-neutral: #F8FAFC;    /* Clean Off-White Surface */
+  --surface-card: #FFFFFF;       /* Pure White Card */
+  --border-subtle: #E2E8F0;      /* Border */
+  --text-primary: #0F172A;       /* Primary Text */
+  --text-secondary: #475569;     /* Secondary Text */
 }
 
 @theme inline {
-  --color-primary-navy: #0B2545;
-  --color-slate-accent: #134074;
-  --color-health-teal: #007A78;
-  --color-health-teal-light: #E6F6F5;
+  --color-primary-navy: #062667;
+  --color-primary-navy-dark: #041945;
+  --color-slate-accent: #0f3675;
+  --color-medical-green: #1b7a3e;
+  --color-medical-green-light: #EBF7EE;
+  --color-torch-gold: #FBE704;
+  --color-torch-gold-hover: #E5D200;
+  --color-radiant-red: #D92228;
   --color-surface-neutral: #F8FAFC;
 }
 

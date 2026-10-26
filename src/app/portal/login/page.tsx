@@ -2,8 +2,9 @@
 
 import { useTransition, useState, Suspense } from "react";
 import { loginAction, quickLoginAction } from "@/actions/auth-actions";
-import { GraduationCap, Lock, Mail, Shield, CheckCircle2, User, KeyRound, ArrowRight } from "lucide-react";
+import { Lock, Mail, Shield, CheckCircle2, User, KeyRound, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
 function PortalLoginContent() {
@@ -39,12 +40,18 @@ function PortalLoginContent() {
       {/* Top Header */}
       <div className="p-6 flex justify-between items-center max-w-7xl mx-auto w-full">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-lg bg-[#007A78] flex items-center justify-center text-white shadow">
-            <GraduationCap className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-full bg-white p-0.5 flex items-center justify-center shadow shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Alkan Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain"
+            />
           </div>
           <div>
-            <div className="font-bold text-base tracking-tight text-white">ALKAN HEALTH COLLEGE</div>
-            <div className="text-xs text-teal-300 font-medium">SIMS Institutional Portal</div>
+            <div className="font-bold text-base tracking-tight text-white leading-tight">ALKAN Health Science, Business & Technology College</div>
+            <div className="text-xs text-[#FBE704] font-medium">SIMS Institutional Academic Portal</div>
           </div>
         </Link>
         <Link

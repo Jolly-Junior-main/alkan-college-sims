@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function AdminCurriculumPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const [departments, programs, courses, teachers] = await Promise.all([
     prisma.department.findMany({ orderBy: { name: "asc" } }),

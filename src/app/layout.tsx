@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Alkan Health Sciences College | SIMS Portal",
-  description: "Academic Management System and Student Information System for Health Sciences College",
+  title: "ALKAN Health Science, Business & Technology College | SIMS Portal",
+  description: "ALKAN Health Science, Business & Technology College - Established 2002 in Memory of Hakim Workineh Eshete. Campuses in Addis Ababa, Bahir Dar, and Dessie. Accredited Higher Education & SIMS Portal.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

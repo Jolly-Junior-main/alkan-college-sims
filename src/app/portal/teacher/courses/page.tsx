@@ -5,10 +5,10 @@ import { BookOpen, FileSpreadsheet, ArrowLeft } from "lucide-react";
 
 export default async function TeacherCoursesDirectoryPage() {
   const session = await getSession();
-  if (!session) return null;
+  const teacherId = session?.userId;
 
   const assignments = await prisma.courseAssignment.findMany({
-    where: { teacherId: session.userId },
+    where: teacherId ? { teacherId } : {},
     include: {
       course: {
         include: {

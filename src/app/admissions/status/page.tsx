@@ -13,18 +13,18 @@ export default function AdmissionsStatusPage() {
         <div>
           <Link
             href="/admissions"
-            className="text-xs font-semibold text-[#007A78] hover:underline flex items-center gap-1 mb-2"
+            className="text-xs font-semibold text-[#062667] hover:underline flex items-center gap-1 mb-2"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Admissions
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-800 text-xs font-bold border border-teal-200 mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-[#1b7a3e] text-xs font-bold border border-emerald-200 mb-2">
             <ShieldCheck className="w-3.5 h-3.5" /> Real-Time Decision Registry
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B2545]">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#062667]">
             Online Application Tracker
           </h1>
           <p className="text-xs text-slate-600 mt-1">
-            Check the real-time review status of your admission application to Alkan Health Sciences College.
+            Check the real-time review status of your admission application to ALKAN Health Science, Business & Technology College.
           </p>
         </div>
 

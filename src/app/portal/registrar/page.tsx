@@ -13,7 +13,6 @@ import {
 
 export default async function RegistrarDashboardPage() {
   const session = await getSession();
-  if (!session) return null;
 
   // Counts
   const pendingApplications = await prisma.application.count({

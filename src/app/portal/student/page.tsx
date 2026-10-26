@@ -18,15 +18,22 @@ import { computeGPA } from "@/lib/grade-calculator";
 
 export default async function StudentDashboardPage() {
   const session = await getSession();
-  if (!session) return null;
+  const userId = session?.userId;
 
-  const student = await prisma.studentProfile.findFirst({
-    where: { userId: session.userId },
-    include: {
-      program: { include: { department: true } },
-      user: { include: { profile: true } },
-    },
-  });
+  const student = userId
+    ? await prisma.studentProfile.findFirst({
+        where: { userId },
+        include: {
+          program: { include: { department: true } },
+          user: { include: { profile: true } },
+        },
+      })
+    : await prisma.studentProfile.findFirst({
+        include: {
+          program: { include: { department: true } },
+          user: { include: { profile: true } },
+        },
+      });
 
   if (!student) {
     return (

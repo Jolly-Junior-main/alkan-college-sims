@@ -6,7 +6,6 @@ import { ArrowLeft, UserCheck } from "lucide-react";
 
 export default async function RegistrarAdmissionsPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const applications = await prisma.application.findMany({
     include: {

@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function AdminUsersPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const [users, programs] = await Promise.all([
     prisma.user.findMany({

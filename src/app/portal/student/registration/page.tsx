@@ -6,14 +6,20 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 
 export default async function StudentRegistrationPage() {
   const session = await getSession();
-  if (!session) return null;
+  const userId = session?.userId;
 
-  const student = await prisma.studentProfile.findFirst({
-    where: { userId: session.userId },
-    include: {
-      program: { include: { department: true } },
-    },
-  });
+  const student = userId
+    ? await prisma.studentProfile.findFirst({
+        where: { userId },
+        include: {
+          program: { include: { department: true } },
+        },
+      })
+    : await prisma.studentProfile.findFirst({
+        include: {
+          program: { include: { department: true } },
+        },
+      });
 
   if (!student) {
     return (

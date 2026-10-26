@@ -63,13 +63,13 @@ export function PortalSidebar({ role }: SidebarProps) {
       : adminLinks;
 
   return (
-    <aside className="w-64 bg-[#0B2545] text-slate-200 min-h-[calc(100vh-65px)] flex flex-col justify-between shrink-0 border-r border-[#134074]">
-      <div className="p-4 space-y-6">
+    <aside className="w-full md:w-64 bg-[#0B2545] text-slate-200 min-h-auto md:min-h-[calc(100vh-65px)] flex flex-col justify-between shrink-0 border-b md:border-b-0 md:border-r border-[#134074]">
+      <div className="p-4 space-y-4 md:space-y-6">
         <div>
           <div className="text-[10px] font-bold uppercase tracking-wider text-teal-400 px-3 mb-2">
             Academic Operations
           </div>
-          <nav className="space-y-1">
+          <nav className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-1">
             {links.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href || (item.href !== `/portal/${role.toLowerCase()}` && pathname.startsWith(item.href));

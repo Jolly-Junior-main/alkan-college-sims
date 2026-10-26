@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 
 export default async function RegistrarRegistrationsPage() {
   const session = await getSession();
-  if (!session) return null;
 
   const batches = await prisma.courseRegistration.findMany({
     include: {

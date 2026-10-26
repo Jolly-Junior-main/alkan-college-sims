@@ -3,19 +3,27 @@ import { prisma } from "@/lib/prisma";
 import { computeGPA } from "@/lib/grade-calculator";
 import { PrintTranscriptButton } from "./print-transcript-button";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, GraduationCap, ShieldCheck, Award } from "lucide-react";
 
 export default async function StudentGradesPage() {
   const session = await getSession();
-  if (!session) return null;
+  const userId = session?.userId;
 
-  const student = await prisma.studentProfile.findFirst({
-    where: { userId: session.userId },
-    include: {
-      program: { include: { department: true } },
-      user: { include: { profile: true } },
-    },
-  });
+  const student = userId
+    ? await prisma.studentProfile.findFirst({
+        where: { userId },
+        include: {
+          program: { include: { department: true } },
+          user: { include: { profile: true } },
+        },
+      })
+    : await prisma.studentProfile.findFirst({
+        include: {
+          program: { include: { department: true } },
+          user: { include: { profile: true } },
+        },
+      });
 
   if (!student) {
     return (
@@ -78,8 +86,14 @@ export default async function StudentGradesPage() {
       <div className="transcript-sheet bg-white rounded-2xl border border-slate-300 shadow-md p-8 sm:p-12 text-slate-900 relative">
         {/* Institutional University Seal & Header */}
         <div className="text-center border-b-2 border-[#0B2545] pb-6 mb-6">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#0B2545] text-white mb-2 shadow">
-            <GraduationCap className="w-8 h-8" />
+          <div className="inline-flex items-center justify-center w-20 h-20 mb-2">
+            <Image
+              src="/logo.png"
+              alt="Alkan College Official Seal"
+              width={72}
+              height={72}
+              className="w-18 h-18 object-contain drop-shadow"
+            />
           </div>
           <h2 className="text-xl sm:text-2xl font-serif font-black tracking-wide text-[#0B2545] uppercase">
             Alkan Health Sciences College
